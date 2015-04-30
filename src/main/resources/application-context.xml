@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	">
+
+	<context:property-placeholder
+		properties-ref="applicationProperties" />
+
+	<bean id="applicationProperties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath:application.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Handlebars configuration -->
+	<alias name="handlebarsTemplateRender" alias="templateRenderer" />
+	<bean id="handlebarsTemplateRender"
+		class="com.xdev.template.email.render.HandlebarsTemplateRenderer">
+		<constructor-arg ref="handlebars" />
+	</bean>
+
+	<bean id="handlebars" class="com.github.jknack.handlebars.Handlebars">
+		<constructor-arg ref="templateLoader" />
+	</bean>
+
+	<bean id="templateLoader" class="com.github.jknack.handlebars.io.ClassPathTemplateLoader">
+		<property name="prefix" value="${email.template.preffix}" />
+		<property name="suffix" value="${email.template.suffix}" />
+	</bean>
+	
+	<!-- Spring Java mail configuration -->
+	<alias name="defaultMailSender" alias="mailSender"/>
+	<bean id="defaultMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	 <property name="host" value="${mail.host}" />
+     <property name="port" value="${mail.port}"/>
+     <property name="username" value="${mail.username}" />
+     <property name="password" value="${mail.password}"/>
+     <property name="javaMailProperties">
+         <props>
+             <prop key="mail.smtp.auth">true</prop>
+             <prop key="mail.smtp.starttls.enable">true</prop>
+             <prop key="mail.smtp.quitwait">false</prop>
+         </props>
+     </property>
+	</bean>
+
+	<alias name="defaultEmailService" alias="emailService" />
+	<bean id="defaultEmailService" class="com.xdev.template.email.DefaultEmailService">
+		<property name="mailSender" ref="mailSender" />
+		<property name="templateRenderer" ref="templateRenderer" />
+	</bean>
+
+</beans>
