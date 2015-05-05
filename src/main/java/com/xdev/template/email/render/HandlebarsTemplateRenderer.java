@@ -32,7 +32,7 @@ public class HandlebarsTemplateRenderer implements TemplateRenderer {
 	}
 
 	protected Template getTemplate(String templateUid) throws IOException {
-		return handlebars.compile(templateUid);
+		return getHandlebars().compile(templateUid);
 	}
 
 	public Handlebars getHandlebars() {

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	">
+
+	<context:property-placeholder
+		properties-ref="applicationProperties" />
+
+
+	<!-- Spring GreenMail Java mail configuration -->
+	<alias name="greenMailTestMailSender" alias="mailSender" />
+	<bean id="greenMailTestMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="localhost" />
+		<property name="port" value="3025" />
+	</bean>
+
+	<bean id="greenMail" class="com.icegreen.greenmail.util.GreenMail" init-method="start" destroy-method="stop">
+		<constructor-arg value="#{T(com.icegreen.greenmail.util.ServerSetupTest).SMTP}" />
+	</bean>
+
+</beans>
