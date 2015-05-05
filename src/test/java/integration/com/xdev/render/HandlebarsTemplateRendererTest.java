@@ -1,4 +1,4 @@
-package com.xdev.inregration.render;
+package integration.com.xdev.render;
 
 import static org.junit.Assert.assertEquals;
 

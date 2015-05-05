@@ -1,4 +1,4 @@
-package com.xdev.inregration.mail;
+package integration.com.xdev.mail;
 
 import static org.junit.Assert.assertEquals;
 
